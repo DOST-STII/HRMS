@@ -1,0 +1,33 @@
+SELECT 
+	a.fldEmpCode,a.fldFromDate,a.fldToDate,a.fldCourse,
+	b.fldEducLevel
+FROM
+	tblempeducback AS a
+LEFT JOIN
+	tbleducationlevel AS b ON a.fldEducLevelID = b.fldEducLevelID
+WHERE
+	a.fldDelete = 0
+
+CREATE OR REPLACE VIEW view_educ AS
+SELECT 
+	a.username,a.lname,a.fname,b.fldFromDate,b.fldToDate,b.fldCourse,
+	c.fldEducLevel,
+	a.division_acro
+FROM
+	view_users AS a
+LEFT JOIN
+	employeedb2.tblempeducback AS b ON a.username = b.fldEmpCode
+LEFT JOIN
+	employeedb2.tbleducationlevel AS c ON b.fldEducLevelID = c.fldEducLevelID
+WHERE
+	b.fldDelete = 0
+ORDER BY a.lname,a.lname, b.fldToDate DESC
+
+
+
+SELECT 
+	a.*
+FROM
+	view_educ AS a
+GROUP BY
+	a.username
